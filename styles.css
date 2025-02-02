@@ -1,0 +1,223 @@
+#dismissible:hover #inline-player {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 10000;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+#dismissible {
+  transition: all 0.3s ease-in-out;
+}
+
+#inline-player {
+  transition: all 0.3s ease-in-out;
+}
+
+.netflix-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.netflix-modal.show {
+  opacity: 1;
+}
+
+.netflix-modal-content {
+  position: relative;
+  transform: scale(0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #141414;
+  border-radius: 4px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  will-change: transform, width, height, top, left;
+}
+
+.netflix-modal.show .netflix-modal-content {
+  transform: scale(1);
+}
+
+.netflix-close-button {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.netflix-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.netflix-iframe-container {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000;
+}
+
+.netflix-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.netflix-minimize-button {
+  position: absolute;
+  top: -40px;
+  right: 0px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.netflix-minimize-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.netflix-modal.minimized {
+  background: none;
+  backdrop-filter: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.netflix-modal.minimized .netflix-modal-content {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  height: 180px;
+  cursor: move;
+  transform-origin: bottom right;
+  animation: minimizeAnimation 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.netflix-modal.minimized .netflix-iframe-container {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.netflix-modal.minimized .netflix-close-button {
+  top: -30px;
+  right: -30px;
+  transform: scale(0.8);
+}
+
+.netflix-modal.minimized .netflix-minimize-button {
+  top: -30px;
+  right: 10px;
+  transform: scale(0.8);
+}
+
+.netflix-modal.dragging .netflix-modal-content {
+  transition: none;
+}
+
+.netflix-modal.minimized.dragging .netflix-modal-content {
+  transition: none;
+  animation: none;
+}
+
+@keyframes minimizeAnimation {
+  0% {
+    width: 1280px;
+    height: 720px;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    width: 320px;
+    height: 180px;
+    transform: translate(0, 0) scale(0.95);
+  }
+  100% {
+    width: 320px;
+    height: 180px;
+    transform: translate(var(--mouse-x, 0), var(--mouse-y, 0)) scale(1);
+  }
+}
+
+.netflix-modal.minimized.dragging .netflix-modal-content {
+  transition: none;
+  animation: none;
+  transform: translate(var(--mouse-x, 0), var(--mouse-y, 0)) scale(1.02);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.netflix-modal.minimized.dragging .netflix-iframe-container {
+  pointer-events: none;
+}
+
+/* Büyütme animasyonu */
+@keyframes maximizeAnimation {
+  0% {
+    width: 320px;
+    height: 180px;
+    transform: translate(var(--mouse-x, 0), var(--mouse-y, 0)) scale(1);
+  }
+  50% {
+    width: 1280px;
+    height: 720px;
+    transform: translate(0, 0) scale(1.05);
+  }
+  100% {
+    width: 1280px;
+    height: 720px;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.netflix-modal-content.maximizing {
+  animation: maximizeAnimation 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Smooth geçişler için ek özellikler */
+.netflix-modal,
+.netflix-modal-content,
+.netflix-iframe-container {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Minimize/maximize butonları için smooth geçiş */
+.netflix-minimize-button,
+.netflix-close-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+} 

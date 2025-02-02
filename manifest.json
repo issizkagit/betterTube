@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Video Modal",
+  "version": "1.0",
+  "description": "Opens YouTube videos in a modal",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "css": ["styles.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ]
+} 
